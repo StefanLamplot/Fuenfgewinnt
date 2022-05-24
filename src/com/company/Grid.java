@@ -97,6 +97,67 @@ public class Grid extends Application {
             //gridPane.setGridLinesVisible(true);
             stage.show();
         }
+        //Realistic Version
+        if(gameVersion.equals("Realistic")){
+            int currentAdd=90;
+            GridPane gridPane = new GridPane();
+            Scene scene = new Scene(gridPane, 300, 300); // w, h
+            stage.setScene(scene);
+            gridPane.setPadding(new Insets(1));
+            gridPane.setHgap(1);
+            gridPane.setVgap(1);
+
+            gridPane.setStyle("-fx-background-color: rgba(107,100,98,0.55);");
+
+            WertButton[] end = new WertButton[100];
+            for (int i = 0; i < end.length; i++) {
+                end[i] = new WertButton("" + i,i);
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                end[i].setPrefSize(screenBounds.getWidth(), screenBounds.getHeight());
+
+                end[i].setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        if (count[0] % 2 == 0) {
+                            if(((Button) (e.getSource())).getText()=="O"){
+
+                            }else {
+                                if (fallCheck(end, currentAdd, ((WertButton) (e.getSource())).getWert())) {
+                                    ((Button) (e.getSource())).setText("X");
+                                    count[0]++;
+                                    controlWinner(end, "X", stage);
+                                    ((Button) (e.getSource())).setStyle("-fx-background-color: #ff0000; ");
+                                }
+                                countplayer1[0]++;
+                            }
+                        } else {
+                            if(((Button) (e.getSource())).getText()=="X"){
+                            }else {
+                                if (fallCheck(end, currentAdd, ((WertButton) (e.getSource())).getWert())) {
+                                    ((Button) (e.getSource())).setText("O");
+                                    count[0]++;
+                                    controlWinner(end, "O", stage);
+                                    ((Button) (e.getSource())).setStyle("-fx-background-color: #003CFFFF; ");
+                                }
+                                countplayer2[0]++;
+                            }
+                        }
+                    }
+                });
+            }
+            int z = 0;
+            for (int index = 0; index < 10; index++) {
+                for (int i = 0; i < 10; i++) {
+                    gridPane.add(end[z], i, index);
+                    z++;
+                }
+
+            }
+            //gridPane.setGridLinesVisible(true);
+            stage.show();
+
+
+        }
     }
     public void controlWinner(Button[] x, String currentSymbol, Stage stage){
         String[][] control=new String[10][10];
@@ -153,5 +214,11 @@ public class Grid extends Application {
             }
         }
         //diagonal
+    }
+    public boolean fallCheck(WertButton[] x, int add, int currentB){
+        if(x[currentB+add].getText()=="X"||x[currentB+add].getText()=="O"){
+            return false;
+        }
+        return true;
     }
 }
